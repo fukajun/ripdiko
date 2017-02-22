@@ -118,7 +118,10 @@ class DownloadTask
 
   def now_playing(station)
     now = Time.now
-    doc = Nokogiri::XML(open("http://radiko.jp/v2/api/program/today?area_id=#{area_id}"))
+    doc = nil
+    Retriable.retriable on: OpenURI::HTTPError, tries: 3, base_interval: 5 do
+      doc = Nokogiri::XML(open("http://radiko.jp/v2/api/program/today?area_id=#{area_id}"))
+    end
 
     node = doc.xpath(%Q|//station[@id="#{station}"]|).first
     node.xpath(".//prog").each do |prog|
