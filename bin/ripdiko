@@ -9,6 +9,7 @@ require 'nokogiri'
 require 'date'
 require 'fileutils'
 require 'mkfifo'
+require 'retriable'
 
 module Notifier
   SCRIPTS = ENV['RIPDIKO_SCRIPTS'] || "#{ENV['HOME']}/.ripdiko/scripts"
